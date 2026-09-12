@@ -1,7 +1,7 @@
-/* !TOUT DOUX - (S)CSS de l'app */
-*{
-  background-color: lightpink;
-}
+/* !TO DO : (S)CSS */
+
+/* GENERAL STYLE OF THE APP*/
+
 
 *,
 *::before,
@@ -43,4 +43,66 @@ p, h1, h2, h3, h4, h5, h6 {
 /* Improve line wrapping */
 p {
   text-wrap: pretty;
+}
+
+
+.footer {
+  background-color: rgba(30, 3, 32, 0.897);
+  color: rgba(0, 255, 191, 0.63);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1em;
+   a {
+    text-decoration: none;
+    color: rgb(23, 6, 253);
+  }
+
+  a:hover {
+    color: lightseagreen;
+  }
+
+}
+
+/* "In React, CSS Modules are CSS files where class names are scoped locally by default." */
+
+/* CSS FOR COMPONENT HEADER */
+
+.header {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 0, 200);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+.header-nav {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 1em;
+
+  a {
+    text-decoration: none;
+    color: rgb(23, 6, 253);
+  }
+
+  a:hover {
+    color: lightseagreen;
+  }
+
+
+.auth-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+  /*  ! TO DO */
+/* 
+  .register-form{
+
+
+  } */
 }

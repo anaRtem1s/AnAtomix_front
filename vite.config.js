@@ -8,4 +8,28 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8081',   // ! backend PORT
+        changeOrigin: true,
+      },
+    },
+  },
 })
+
+
+
+
+//! TO DISABLE CORS FOR THIRD PARTY API, SEE IF NEEDED, SAME AS UPSTAIRS BUT EXPORTS DEFAULT
+
+// export default {
+//   server: {
+//     proxy: {
+//       '/api': 'http://localhost:3001'
+//     }
+//   }
+// }
+
+
+
