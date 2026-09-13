@@ -1,12 +1,18 @@
 import Header from "./Header";
+import Footer from "./Footer";
 
-export default function Layout({ children, onNav }) {
+export default function Layout({ children, onNav, account, onLogout }) {
   return (
     <>
-      <Header onNav={onNav} />
-      <main>
-        {children}   {/* RegisterForm / LoginForm / Reader */}
-      </main>
+      <div className="layout-container">
+
+        <Header account={account} onLogout={onLogout} onNav={onNav} />
+
+        <main>{children}</main>  {/* RegisterForm / LoginForm / Reader */}
+        
+        <Footer onNav={onNav} />
+      </div>
     </>
   );
 }
+

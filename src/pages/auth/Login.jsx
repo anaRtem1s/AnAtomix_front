@@ -12,12 +12,12 @@ export default function LoginForm({ onSuccess }) {
             email: '',
             password: ''
         },
-        // Errors appear as user types
+        //! Errors appear as user types - CHANGE THAT !!!
         mode: 'onChange'
     });
 
     const sendLogin = async (data) => {
-        
+
 
         // CALLING EXPRESS WEB API
 
@@ -27,24 +27,32 @@ export default function LoginForm({ onSuccess }) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             });
+
             // IF BACKEND REFUSES (= WRONG CREDENTIALS)
 
             if (!response.ok) {
                 setError("password", { message: 'Wrong username, email or password. Go again.' });
                 return;
             }
+
             const result = await response.json();
-            //! Express sent by Express(JWT) —>  SESSION
+
+            //! sent by Express(JWT) —>  SESSION
             //! Ta garde RequireAuth le lit, le bouton Logout le supprime
 
             localStorage.setItem("token", result.token);
 
-            localStorage.setItem("user", JSON.stringify(result.user));
+            localStorage.setItem("account", JSON.stringify(result.account));
+
+            // Notify App.jsx to update State & Switch Screen => This passes the user data up so the Header can show the Logout button.
+            if (onSuccess) {
+                onSuccess(result.account, result.token);
+            }
+            // CLEANING FORM
 
             reset();
 
-            onSuccess(); // REDIRECTION MANAGED BY APP + afficher    alert(`Welcome back ${data.username}! Logging you in to this wonderful RSS | Atom Feeds Aggregator`);
-            
+            setTimeout(() => window.location.href = '/', 100); // Force reload to trigger fresh auth check
 
 
         } catch (error) {

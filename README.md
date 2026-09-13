@@ -6,3 +6,7 @@
 
 - Using ESLint with JavaScript + React Compiler.
 
+## Dev environement
+
+- with Firefox Developer Edition + MS VSCode on Debian 
+
