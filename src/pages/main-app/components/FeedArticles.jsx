@@ -6,7 +6,7 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
   const [error, setError] = useState(null);
 
   // STATE TO TRACK THE ACTIVE OPENED ARTICLE
-  
+
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   // FETCH ALL FEED ARTICLES FROM THE ENDPOINT
@@ -47,9 +47,13 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
   let displayedArticles = feedArticles.filter(article => {
     const source = article.feed_source || article.feedSource;
 
+    //  EXTRACT SUBSCRIPTION DATA FROM THE FIRST ENTRY OF THE RELATION ARRAY
+
+    const subscription = source && source.subscriptions ? source.subscriptions[0] : null;
+
     // IF THE LOOSE JOIN CONTAINS YOUR SUBSCRIPTION DATA, ACCOUNT FOLLOWS THIS FEED SOURCE
 
-    return source && source.subscription;
+    return source && subscription;
   });
 
   //  FILTER CONDITION A: CORRECTLY SCANS DOWN THE SEQUELIZE JOIN TREE TO FIND CATEGORIES
@@ -60,13 +64,20 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
 
       const source = article.feed_source || article.feedSource;
 
-      if (source && source.subscription) {
+      // EXTRACT SUBSCRIPTION DATA FROM THE FIRST ENTRY OF THE RELATION ARRAY
 
-        return source.subscription.category_id === activeCategoryId;
+      const subscription = source && source.subscriptions ? source.subscriptions[0] : null;
+
+      if (source && subscription) {
+
+        // SAFELY MATCH THE DIRECT OBJECT COMPONENT FIELD
+        
+        return subscription.category_id === activeCategoryId;
       }
       return false;
     });
   }
+
   //  FILTER CONDITION B: SCAN DATA ROWS MATCHING INDIVIDUAL WEBSITE LOGS
 
   if (activeFeedSourceId) {

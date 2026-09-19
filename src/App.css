@@ -174,8 +174,6 @@ main {
   background-color: rgba(30, 3, 32, 0.897);
   color: rgba(23, 236, 183, 0.877);
   display: flex;
-  /*? Do not shrink or grow */
-  /*? flex: 0 0 auto;  */
   align-items: center;
   justify-content: space-evenly;
   padding: 1em;
