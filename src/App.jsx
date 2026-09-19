@@ -1,47 +1,81 @@
 import './App.css'
 
 import { useState, useEffect } from "react";
-import Layout from './general_layout/Layout'
-import LoginForm from './pages/auth/Login'
-import RegisterForm from './pages/auth/Register'
+
+import MainLayout from './pages/main-app/layout/MainLayout.jsx';
+
+import LoginForm from './pages/auth/components/Login.jsx'
+import RegisterForm from './pages/auth/components/Register.jsx'
+
+import CenterPage from './pages/main-app/components/CenterPage.jsx';
+
+import AccountSettings from './pages/main-app/components/AccountSettings.jsx';
+import CoolLinks from './pages/main-app/components/CoolLinks.jsx';
+
+import Categories from './pages/main-app/components/Categories.jsx';
+import FeedSources from './pages/main-app/components/FeedSources.jsx';
+import Subscriptions from './pages/main-app/components/Subscriptions.jsx';
+
+
+
 
 export default function App() {
 
-  // 'auth' = page d'accueil avec les 2 formulaires | 'reader' = l'app après login
-
-  const [screen, setScreen] = useState("auth");
-
-  // Track the logged-in account here 
+  // -----------------------------------------
+  // AUTHENTICATION
+  // -----------------------------------------
 
   const [account, setAccount] = useState(null);
 
+  // -----------------------------------------
+  // NAVIGATION
+  // -----------------------------------------
+
+  const [screen, setScreen] = useState('login');
+
+  // -----------------------------------------
+  // RESTORE SESSION
+  // -----------------------------------------
 
   useEffect(() => {
-    const savedAccount = localStorage.getItem("account");
 
-    // Only try to parse if something exists
-    if (savedAccount && savedAccount !== "null" && savedAccount !== "undefined") {
-      try {
-        const parsedAccount = JSON.parse(savedAccount);
+    const token = localStorage.getItem('token');
+    const savedAccount = localStorage.getItem('account');
 
-        // Verify it's actually an object before setting state
-        if (parsedAccount && typeof parsedAccount === 'object') {
-          setAccount(parsedAccount);
-          setScreen("reader");
+    if (!token || !savedAccount) {
+      return;
+    }
 
-        } else {
+    try {
 
-          localStorage.removeItem("account");
-        }
-      } catch (error) {
+      const parsedAccount = JSON.parse(savedAccount);
 
-        localStorage.clear();
+      if (parsedAccount && typeof parsedAccount === 'object') {
+
+        setAccount(parsedAccount);
+        setScreen('reader');
 
       }
+
+    } catch (error) {
+
+      console.error('Could not restore session:', error);
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('account');
+
     }
+
   }, []);
 
 
+  //? :::::::::::::::::::::::::::::::::::::::: REGISTER ::::::::::::::::::::::::::::::::::::::::
+
+  const handleRegisterSuccess = () => {
+    setScreen('login');
+  };
+
+  // :::::::::::::::::::::::::::::::::::::::: LOGIN ::::::::::::::::::::::::::::::::::::::::
 
   const handleLoginSuccess = (accountData, token) => {
 
@@ -56,6 +90,8 @@ export default function App() {
 
   };
 
+  // :::::::::::::::::::::::::::::::::::::::: LOGOUT ::::::::::::::::::::::::::::::::::::::::
+
   const handleLogout = () => {
 
     //  Clear storage
@@ -63,33 +99,125 @@ export default function App() {
     localStorage.removeItem("token");
     localStorage.removeItem("account");
 
-    // Clear State
+    // Clear state
 
     setAccount(null);
 
-    // Switch Screen
+    // Switch screen to Auth (Register || Login)
 
     setScreen("auth");
   };
 
-  return (
-    <Layout onNav={setScreen}
-      account={account}        // PASS ACCOUNT TO LAYOUT 
-      onLogout={handleLogout} // PASS LOGOUT FUNCTION TO LAYOUT
-    >
-      {screen === "auth" && (
+  // :::::::::::::::::::::::::::::::::::::::: NAVIGATION BETWEEN SCREENS ::::::::::::::::::::::::::::::::::::::::
+
+  const handleNav = (nextScreen) => {
+    setScreen(nextScreen);
+  };
+
+  // :::::::::::::::::::::::::::::::::::::::: NOT AUTHENTICATED (NOT LOGGED IN)::::::::::::::::::::::::::::::::::::::::
+
+  if (!account) {
+
+    if (screen === 'register') {
+
+      return (
         <div className="auth-container">
-          <RegisterForm onSuccess={() => setScreen("auth")} />
-          <span> OR </span>
-          <LoginForm onSuccess={handleLoginSuccess} />
+
+          <RegisterForm
+            onSuccess={handleRegisterSuccess}
+          />
+
+          <button
+            type="button"
+            onClick={() => handleNav('login')}
+          >
+            Already have an account? Login
+          </button>
+
+        </div>
+      );
+    }
+
+
+    return (
+      <div className="auth-container">
+
+        <LoginForm
+          onSuccess={handleLoginSuccess}
+        />
+
+        <button
+          type="button"
+          onClick={() => handleNav('register')}
+        >
+          Create an account
+        </button>
+
+      </div>
+    );
+
+  }
+
+  // :::::::::::::::::::::::::::::::::::::::: AUTHENTICATED (LOGGED IN) => MAIN APP ::::::::::::::::::::::::::::::::::::::::
+
+
+  return (
+
+    <MainLayout account={account} onLogout={handleLogout} onNav={handleNav} >
+
+
+      {screen === 'reader' && (
+        <CenterPage
+          account={account}
+          onNav={handleNav}
+        />
+      )}
+
+      {screen === 'account-settings' && (
+        <AccountSettings
+          account={account}
+          onNav={handleNav}
+        />
+      )}
+
+
+      {screen === 'cool-links' && (
+        <CoolLinks
+          onNav={handleNav}
+        />
+      )}
+
+      {screen === 'categories-management' && (
+        <Categories
+          onNav={handleNav}
+        />
+      )}
+
+      {screen === 'tags-management' && (
+        <div>
+          <button onClick={() => handleNav("reader")}>← Back to Feeds</button>
+          <h2>My Tags Management Hub</h2>
+          <p>Tag configuration workspace coming soon.</p>
         </div>
       )}
-      {screen === "reader" 
-      && <h2> Welcome {account.username}! <span>- RSS Reader (to come!)</span> </h2>
-      }
-      
-      
 
-    </Layout>
+
+      {screen === 'feed-sources' && (
+        <FeedSources
+          onNav={handleNav}
+        />
+      )}
+
+      {screen === 'subscriptions' && (
+        <Subscriptions
+          onNav={handleNav}
+        />
+      )}
+
+
+    </MainLayout>
   );
 }
+
+
+

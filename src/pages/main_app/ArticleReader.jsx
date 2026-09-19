@@ -1,1 +1,0 @@
-// prints ONE article + Back button

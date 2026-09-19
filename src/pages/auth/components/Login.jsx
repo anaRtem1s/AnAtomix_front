@@ -12,9 +12,21 @@ export default function LoginForm({ onSuccess }) {
             email: '',
             password: ''
         },
-        //! Errors appear as user types - CHANGE THAT !!!
+        // Errors appear as user types
+
         mode: 'onChange'
     });
+
+    // FRONTEND CHECK: NEEDS EITHER USERNAME OR EMAIL (NOT BOTH REQUIRED)
+
+    const validateLoginField = (value, context) => {
+        const { email, username } = context.values;
+        if (!email && !username) {
+            return "Provide an email or a username to log in";
+        }
+        return true;
+    };
+
 
     const sendLogin = async (data) => {
 
@@ -37,22 +49,23 @@ export default function LoginForm({ onSuccess }) {
 
             const result = await response.json();
 
-            //! sent by Express(JWT) —>  SESSION
-            //! Ta garde RequireAuth le lit, le bouton Logout le supprime
+            // SENT BY EXPRESS (JWT) => SESSION
 
             localStorage.setItem("token", result.token);
 
             localStorage.setItem("account", JSON.stringify(result.account));
 
-            // Notify App.jsx to update State & Switch Screen => This passes the user data up so the Header can show the Logout button.
+            //! NOTIFYING App.jsx to update State & Switch Screen => This passes the user data up so the Header can show the Logout button.
+
             if (onSuccess) {
                 onSuccess(result.account, result.token);
             }
-            // CLEANING FORM
+
+            // CLEANING FORM FIELDS
 
             reset();
 
-            setTimeout(() => window.location.href = '/', 100); // Force reload to trigger fresh auth check
+            //!! setTimeout(() => window.location.href = '/', 100); // Force reload to trigger fresh auth check
 
 
         } catch (error) {
@@ -72,26 +85,44 @@ export default function LoginForm({ onSuccess }) {
                 <form onSubmit={handleSubmit(sendLogin)}>
 
                     <div>
-                        <h3>Log in to your account:</h3>
+                        <h3>Log in to your account (username OR email):</h3>
 
-                        {/* USERNAME */}
+                        {/* USERNAME - OPTIONAL IF EMAIL */}
+
                         <div>
                             <label htmlFor="login-username">Username</label>
                             <input
                                 id="login-username" type="text"
-                                {...register('username',
-                                    {
-                                        required:
-                                        {
-                                            value: true,
-                                            message: 'Required field'
+
+                                {...register('username', {
+
+                                    validate: (value, form) => {
+
+                                        if (!value && !form.email) {
+
+                                            return 'Provide an email or a username';
                                         }
-                                    })}
+
+                                        return true;
+                                    }
+                                })}
                             />
+
+                            {/*  TO DUMP */}
+
+                            {/* //      {
+                            //             required:
+                            //             {
+                            //                 value: true,
+                            //                 message: 'Required field'
+                            //             }
+                            //         })}
+                            // /> */}
+
                             {errors.username && <span>{errors.username.message}</span>}
                         </div>
 
-                        {/* EMAIL */}
+                        {/* EMAIL - OPTIONAL IF USERNAME */}
 
                         <div>
                             <label htmlFor="login-email">Email</label>
@@ -99,23 +130,32 @@ export default function LoginForm({ onSuccess }) {
                                 id="login-email" type="email"
                                 {...register('email',
                                     {
-                                        required:
-                                        {
-                                            value: true,
-                                            message: 'Required field'
-                                        },
+                                        //! TO DUMP
+
+                                        // required:
+                                        // {
+                                        //     value: true,
+                                        //     message: 'Required field'
+                                        // },
                                         pattern:
                                         {
                                             value: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/,
                                             message: 'Invalid email format'
+                                        },
+                                        validate: (value, form) => {
+                                            if (!value && !form.username) {
+                                                return 'Provide an email or a username';
+                                            }
+                                            return true;
                                         }
                                     })}
                             />
+
                             {errors.email && <span>{errors.email.message}</span>}
                         </div>
                     </div>
 
-                    {/* PASSWORD */}
+                    {/* PASSWORD - REQUIRED */}
 
                     <div>
                         <label htmlFor="login-password">Password</label>

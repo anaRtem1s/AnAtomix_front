@@ -1,6 +1,6 @@
 // Cette librairie nous donnes accès à une nouvelle hook useForm() qui nous donne accès à plusieurs propriétés et méthodes
 //? - 1) register('nomChamp')
-// Permet d'enregistrer un champs pour obtenir sa valeur au submit
+// Permet d'enregistrer un champ pour obtenir sa valeur au submit
 //? - 2) handleSubmit(callbackSuccess, callbackFail)
 // Méthode qui fait déjà le preventDefault et qui récupère toutes les données du formulaire pour les mettre dans un objet. Elle prend en premier paramètre la fonction à exécuter en cas de formulaire valide et en deuxième, la fonction à exécuter en cas de formulaire invalide
 //? - 3) On peut rajouter au register, des validateurs (validators)
@@ -17,7 +17,7 @@ export default function RegisterForm({ onSuccess }) {
 
     const passwordErrorMessage = `Your password must contain: 1. Min 8 characters 2. One uppercase letter, 3. One lowercase letter, 4. One digit 5. One special character  [${specialChars}]`;
 
-    // — setError (erreurs backend)
+    // !— setError (erreurs backend)
 
     const { register, handleSubmit, setError, watch, formState: { errors }, reset } = useForm({
         defaultValues: {
@@ -26,11 +26,11 @@ export default function RegisterForm({ onSuccess }) {
             password: '',
             confirmPassword: ''
         },
-        //  Pour définir comment la détection d'erreurs se fait. Par défaut c'est onSubmit donc il faudra soumettre le formulaire au moins une première fois pour voir nos messages d'erreur. Si on met onChange les messages vont se déclencher chaque fois qu'on modifie le champ.
+        // ! Pour définir comment la détection d'erreurs se fait. Par défaut c'est onSubmit donc il faudra soumettre le formulaire au moins une première fois pour voir nos messages d'erreur. Si on met onChange les messages vont se déclencher chaque fois qu'on modifie le champ.
         mode: 'onChange'
     });
 
-    // watch surveille la valeur live du champ password
+    //! watch surveille la valeur live du champ password
 
     const passwordValue = watch('password');
 
@@ -40,24 +40,23 @@ export default function RegisterForm({ onSuccess }) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
 
-                // on n'envoie que les 3 champs qui existent dans ta table accounts 
-                // creationdate / role / is_active sont remplis par la DB 
+                //! on n'envoie que les 3 champs qui existent dans ta table accounts 
+                //! creationdate / role / is_active sont remplis par la DB 
 
                 body: JSON.stringify({
-                    username: data.username, //!TRANSFORMING STRINGS INTO JSON voir si pas redondant ailleurs
+                    username: data.username, 
                     email: data.email,
                     password: data.password
                 })
             });
-            // si le backend refuse (doublon username/email uniques ==> erreur Zod du backend, tout ce qu'il renvoie en erreur)
+            //! si le backend refuse (doublon username/email uniques ==> erreur Zod du backend, tout ce qu'il renvoie en erreur)
 
             if (!response.ok) {
 
                 const error = await response.json();
 
-                // setError pose l'erreur du backend SUR LE BON CHAMP —
-                // elle s'affiche dans TES {errors.xxx && <span>} existants,
-                // sans toucher à une seule ligne de ton JSX
+                //! setError pose l'erreur du backend SUR LE BON CHAMP —
+                
                 if (error.field === 'username') {
                     setError("username", { message: 'This username is already taken' });
                 } else if (error.field === 'email') {
@@ -65,12 +64,12 @@ export default function RegisterForm({ onSuccess }) {
                 } else {
                     setError("confirmPassword", { message: error.message || 'Registration failed' });
                 }
-                return; // on ne signale PAS le succès si ça a échoué
+                return; //! on ne signale PAS le succès si ça a échoué
             }
 
-            reset(); // useForm RESET OF THE FORM
+            reset(); // RESET OF FORM FIELDS
 
-            onSuccess(); // ROUTING : App.jsx redirects to Login page / screen
+            onSuccess(); //!!!!!!! ROUTING : App.jsx redirects to Login page / screen
 
         } catch (error) {
 
