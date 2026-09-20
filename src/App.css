@@ -29,6 +29,8 @@ body {
   font-family: 'Redaction-Inclusive-Regular', sans-serif;
   /* Allow ligatures */
   font-feature-settings: "liga" 1;
+  /* All text except specified otherwise */
+  color: white;
 }
 
 @font-face {
@@ -73,32 +75,7 @@ p {
   text-wrap: pretty;
 }
 
-a:link,
-a:visited {
-  color: #e28b08;
-  text-decoration: underline;
-}
-
-a,
-button:hover,
-a,
-button:active,
-a,
-button:focus-visible {
-  color: #ffffff;
-  text-decoration: none;
-  outline: none;
-}
-
-button {
-  color: darkorange;
-  border-radius: 10em;
-  padding: 0.1em;
-  border:none;
-  background: transparent;
-}
-
-/* ::::::::::::::::::::::::::::::::::::::::::::::::::: ACCESSIBILITY INSIDE REACT COMPONENTS /* :::::::::::::::::::::::::::::::::::::::::::::::::::  */
+/* ::::::::::::::::::::::::::::::::::::::::::::::::::: ACCESSIBILITY - REACT CONTEXT /* :::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
 fieldset {
   border: none;
@@ -137,7 +114,6 @@ legend {
   outline: 2px solid #17ecb7;
 }
 
-
 .btn-tags-management:hover,
 .btn-tags-management:focus-visible {
   background-color: #052c34;
@@ -158,30 +134,62 @@ legend {
 
   }  */
 
+
+
 .auth-container {
   display: flex;
   gap: 2rem;
   justify-content: center;
   align-items: flex-start;
+  color: silver;
+  background:black;
 }
 
 
 /* :::::::::::::::::::::::::::::::::::::::: MAIN APP PAGE ::::::::::::::::::::::::::::::::::::::::::::::::::: */
 
+
+/* 
+.dark-colorful-mode{ 
+}*/
+
+a:link,
+a:visited {
+  color: #e28b08;
+  text-decoration: underline;
+}
+
+a,
+button:hover,
+a,
+button:active,
+a,
+button:focus-visible {
+  color: #ffffff;
+  text-decoration: none;
+  outline: none;
+}
+
+button {
+  color: darkorange;
+  border-radius: 10em;
+  padding: 0.1em;
+  border: none;
+  background: transparent;
+}
+
 header {
-  background: linear-gradient(90deg, #011412 0%, #0c2b29 50%, #113b39 100%);
+  background: linear-gradient(90deg, #011412 0%, #052120 70%, #0c3330 100%);
   color: #e28b08;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1em;
-  border-bottom: 1px solid rgba(23, 236, 183, 0.08);
 }
 
 header h1 button {
   color: #e28b08;
 }
-
 
 .header-nav {
   list-style: none;

@@ -4,10 +4,9 @@ export default function Footer() {
       <footer className="footer">
         <nav>
           <ul className="footer-nav">
-            {/* //!   TO DO */}
-            <li><a href="http://">License</a></li>
-            {/* //!   TO DO */}
-            <li><a href="http://">Source code on GitLab</a></li>
+            <li><a href="https://creativecommons.org/licenses/by-nc/4.0" rel="external" target="_blank">License</a></li>
+            <li><a href="http://https://gitlab.com/anaRtem1s/fs-project_rss-reader_client-front" rel="external" target="_blank">Source code on GitLab (Client)</a></li>
+            <li><a href="https://gitlab.com/anaRtem1s/fs-project_rss-reader_api_server-back" rel="external" target="_blank">Source code on GitLab (Server)</a></li>
             {/* //!   TO DO */}
             <li><a href="http://">About Anatomix</a></li>
             {/* //!   TO DO */}

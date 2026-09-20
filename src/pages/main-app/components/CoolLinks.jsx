@@ -1,5 +1,3 @@
-//! VOIR POUR TAGS, SIMPLIFIER
-// 
 export default function CoolLinks() {
 
   return (
