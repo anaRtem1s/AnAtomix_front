@@ -165,7 +165,7 @@ export default function Categories({ onNav }) {
 
 
   return (
-    <div>
+    <div className="cpage-container">
       <button onClick={() => onNav("reader")}>🢦 Back to Feeds</button>
 
       <h2>Categories</h2>

@@ -39,14 +39,14 @@ export default function Header({ account, onLogout, onNav }) {
               {/* CATEGORIES MANAGEMENT BUTTON */}
               <li>
                 <button onClick={() => onNav('categories-management')} className="btn-categories-management">
-                  🍄 Manage Categories
+                  🍄 Manage categories
                 </button>
               </li>
 
               {/* TAGS MANAGEMENT BUTTON */}
               <li>
                 <button onClick={() => onNav('tags-management')} className="btn-tags-management">
-                  🍬 Manage Tags
+                  🍬 Manage tags
                 </button>
               </li>
 

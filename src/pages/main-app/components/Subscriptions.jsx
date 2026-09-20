@@ -114,7 +114,7 @@ export default function Subscriptions({ onNav }) {
   };
 
   return (
-    <div>
+    <div className="cpage-container">
       <button
         onClick={() => onNav("reader")}
         title="Back to feeds dashboard list view"
@@ -136,7 +136,9 @@ export default function Subscriptions({ onNav }) {
 
             <li key={subscription.id}>
               <article aria-labelledby={`sub-heading-${subscription.id}`}>
-                <div>
+
+                <div className="list-ctnr">
+
                   <strong id={`sub-heading-${subscription.id}`}>
                     <svg
                       className="rss-icon"
@@ -154,9 +156,8 @@ export default function Subscriptions({ onNav }) {
                     {feedSource.title}
                   </strong> ({feedSource.feed_type})
 
-                  <br /> //!
-
                   <small>URL: <a href={feedSource.feed_url} target="_blank" rel="noreferrer" title="Open raw source XML context link">{feedSource.feed_url}</a></small>
+                  
                 </div>
 
                 {/* DROP DOWN SELECTOR ASSIGNS OR UPDATES CATEGORY RELATIONSHIPS NATIVELY */}

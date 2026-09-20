@@ -105,7 +105,7 @@ export default function AccountSettings({ account, onNav }) {
   };
 
   return (
-    <div>
+    <div className="cpage-container">
 
       {/* <== BACK TO FEEDS BTN */}
       <button 

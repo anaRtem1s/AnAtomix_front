@@ -78,9 +78,28 @@ p {
 /* ::::::::::::::::::::::::::::::::::::::::::::::::::: ACCESSIBILITY - REACT CONTEXT /* :::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
 fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
+  margin-bottom: 2.5rem; /* Pushes the next form section cleanly downward */
+}
+
+fieldset label {
+  display: block;
+  margin-top: 1.25rem;    /* Generates spacing between separate input rows */
+  margin-bottom: 0.35rem;  /* Keeps the label neatly tied to its target text box */
+}
+
+fieldset input {
+  display: block;
+  width: 100%;
+  max-width: 360px;       
+  padding: 0.6rem;         
+}
+
+
+fieldset button,
+.centerpage-container button.btn {
+  display: block;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1.5rem;
 }
 
 legend {
@@ -142,7 +161,7 @@ legend {
   justify-content: center;
   align-items: flex-start;
   color: silver;
-  background:black;
+  background: black;
 }
 
 
@@ -161,7 +180,7 @@ a,
 button:active,
 a,
 button:focus-visible {
-  color: #ffffff;
+  color: cadetblue;
   text-decoration: none;
   outline: none;
 }
@@ -180,6 +199,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);
   padding: 1em;
 }
 
@@ -202,10 +222,10 @@ main {
 .main-layout {
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #011412 0%, #052120 50%, #0c3330 100%);
   /* Full viewport height */
   height: 100vh;
   width: 100%;
-  background-color: #020b0d;
 }
 
 .middle-container {
@@ -220,6 +240,8 @@ main {
   /* Anchor for the absolute resizing handle */
   position: relative;
   background: linear-gradient(180deg, #011412 0%, #052120 70%, #0c3330 100%);
+  border-right: none;
+  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.75);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -228,7 +250,7 @@ main {
   overflow-x: hidden;
   padding: 1em;
   gap: 5em;
-  border-right: 1px solid rgba(23, 236, 183, 0.08);
+  align-items: flex-start;
 }
 
 .resize-handle {
@@ -238,6 +260,10 @@ main {
   width: 6px;
   height: 100%;
   cursor: ew-resize;
+}
+
+.cpage-container {
+  padding: 1em 2em;
 }
 
 .centerpage-container {
@@ -250,16 +276,15 @@ main {
   height: 100%;
   /* Scroll internally */
   overflow-y: scroll;
+  padding: 1em 2em;
 }
 
 .centerpage-container>div>ul>li {
-  background: rgba(1, 20, 18, 0.15);
   padding: 1.25em;
   margin-bottom: 1.25em;
   border-radius: 8px;
   border: 1px solid rgba(226, 139, 8, 0.12);
 }
-
 
 .feed-sources-list-ctnr {
   overflow: scroll;
@@ -273,6 +298,13 @@ main {
   overflow: none;
 }
 
+.list-ctnr{
+  display:flex;
+  flex-direction: column;
+  gap: 0.5em;;
+  margin: 1em;
+}
+
 .rss-icon {
   display: inline-block;
   vertical-align: middle;
@@ -284,12 +316,11 @@ main {
 }
 
 .footer {
-  background-color: rgba(3, 29, 32, 0.897);
-  color: rgba(23, 236, 183, 0.877);
+  background: linear-gradient(270deg, #0c3330 0%, #052120 70%, #0c3330 100%);
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  padding: 1em;
+  padding: 0.7em;
 }
 
 .footer-nav {
@@ -301,10 +332,11 @@ main {
 }
 
 .footer-nav a {
+  font-size: 0.9em;
   text-decoration: none;
-  color: white;
+  color: rgba(255, 140, 0, 0.603)
 }
 
 .footer-nav a:hover {
-  color: lightseagreen;
+  color: rgb(37, 114, 110);
 }

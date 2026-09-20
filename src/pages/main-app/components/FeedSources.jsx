@@ -131,7 +131,7 @@ export default function FeedSources({ onNav }) {
   };
 
   return (
-    <div>
+    <div className="cpage-container">
       <button onClick={() => onNav("reader")}>🢦 Back to Feeds</button>
 
       <h2>Feed Sources Catalogue</h2>
