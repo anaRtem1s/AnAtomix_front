@@ -7,11 +7,13 @@ export default function LoginForm({ onSuccess }) {
     // setError (erreurs backend) ajouté
 
     const { register, handleSubmit, setError, formState: { errors }, reset } = useForm({
+        
         defaultValues: {
             username: '',
             email: '',
             password: ''
         },
+
         // Errors appear as user types
 
         mode: 'onChange'
@@ -65,14 +67,12 @@ export default function LoginForm({ onSuccess }) {
 
             reset();
 
-            //!! setTimeout(() => window.location.href = '/', 100); // Force reload to trigger fresh auth check
-
 
         } catch (error) {
 
             // SERVER UNREACHABLE --> USER NOTIFIED - ERROR
 
-            setError("password", { message: 'Server is unreachable sorry, try again later 🦝' });
+            setError("password", { message: '💥 Server is unreachable sorry, try again later 🦝' });
 
         }
     }
@@ -81,110 +81,83 @@ export default function LoginForm({ onSuccess }) {
         <div>
             <h1 className="login-form">Login</h1>
 
-            <div>
-                <form onSubmit={handleSubmit(sendLogin)}>
 
-                    <div>
-                        <h3>Log in to your account (username OR email):</h3>
+            <form onSubmit={handleSubmit(sendLogin)}>
+                <fieldset>
+                    <legend id="login-heading">Log in to your account (username or email):</legend>
 
-                        {/* USERNAME - OPTIONAL IF EMAIL */}
+                    {/* USERNAME - OPTIONAL IF EMAIL */}
 
-                        <div>
-                            <label htmlFor="login-username">Username</label>
-                            <input
-                                id="login-username" type="text"
+                    <label htmlFor="login-username">Username</label>
+                    <input
+                        id="login-username" type="text"
+                        aria-describedby={errors.username ? "login-username-error" : undefined}
+                        {...register('username', {
 
-                                {...register('username', {
+                            validate: (value, form) => {
 
-                                    validate: (value, form) => {
+                                if (!value && !form.email) {
 
-                                        if (!value && !form.email) {
+                                    return 'Provide an email or a username';
+                                }
 
-                                            return 'Provide an email or a username';
-                                        }
+                                return true;
+                            }
+                        })}
+                    />
 
-                                        return true;
+                    {errors.username && <span id="login-username-error" className="alert-message" role="alert">{errors.username.message}</span>}
+
+
+                    {/* EMAIL - OPTIONAL IF USERNAME */}
+
+                    <label htmlFor="login-email">Email</label>
+                    <input
+                        id="login-email" type="email"
+                        aria-describedby={errors.email ? "login-email-error" : undefined}
+                        {...register('email',
+                            {
+                                pattern:
+                                {
+                                    value: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/,
+                                    message: 'Invalid email format'
+                                },
+                                validate: (value, form) => {
+                                    if (!value && !form.username) {
+                                        return 'Provide an email or a username';
                                     }
-                                })}
-                            />
+                                    return true;
+                                }
+                            })}
+                    />
 
-                            {/*  TO DUMP */}
-
-                            {/* //      {
-                            //             required:
-                            //             {
-                            //                 value: true,
-                            //                 message: 'Required field'
-                            //             }
-                            //         })}
-                            // /> */}
-
-                            {errors.username && <span>{errors.username.message}</span>}
-                        </div>
-
-                        {/* EMAIL - OPTIONAL IF USERNAME */}
-
-                        <div>
-                            <label htmlFor="login-email">Email</label>
-                            <input
-                                id="login-email" type="email"
-                                {...register('email',
-                                    {
-                                        //! TO DUMP
-
-                                        // required:
-                                        // {
-                                        //     value: true,
-                                        //     message: 'Required field'
-                                        // },
-                                        pattern:
-                                        {
-                                            value: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/,
-                                            message: 'Invalid email format'
-                                        },
-                                        validate: (value, form) => {
-                                            if (!value && !form.username) {
-                                                return 'Provide an email or a username';
-                                            }
-                                            return true;
-                                        }
-                                    })}
-                            />
-
-                            {errors.email && <span>{errors.email.message}</span>}
-                        </div>
-                    </div>
+                    {errors.email && <span id="login-email-error" className="alert-message" role="alert">{errors.email.message}</span>}
 
                     {/* PASSWORD - REQUIRED */}
 
-                    <div>
-                        <label htmlFor="login-password">Password</label>
-                        <input
-                            id="login-password" type="password"
-                            {...register('password',
+                    <label htmlFor="login-password">Password</label>
+                    <input
+                        id="login-password" type="password"
+                        aria-describedby={errors.password ? "login-password-error" : undefined}
+                        {...register('password',
+                            {
+                                required:
                                 {
-                                    required:
-                                    {
-                                        value: true,
-                                        message: 'Required field'
-                                    }
-                                })}
-                        />
-                        {errors.password && <span>{errors.password.message}</span>}
-                    </div>
+                                    value: true,
+                                    message: 'Required field'
+                                }
+                            })}
+                    />
+                    {errors.password && <span id="login-password-error" className="alert-message" role="alert">{errors.password.message}</span>}
 
                     {/* SUBMIT LOGIN FORM */}
 
-                    <div>
-                        <button className="btn">Login</button>
-                    </div>
+                    <button className="btn">Login</button>
+                </fieldset>
 
-                </form>
-
-            </div >
+            </form>
 
         </div >
     )
 }
-
 

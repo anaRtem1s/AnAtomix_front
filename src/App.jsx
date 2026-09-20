@@ -2,10 +2,8 @@ import './App.css'
 
 import { useState, useEffect } from "react";
 
+import AuthLayout from './pages/auth/layout/AuthLayout.jsx';
 import MainLayout from './pages/main-app/layout/MainLayout.jsx';
-
-import LoginForm from './pages/auth/components/Login.jsx'
-import RegisterForm from './pages/auth/components/Register.jsx'
 
 import CenterPage from './pages/main-app/components/CenterPage.jsx';
 
@@ -114,110 +112,48 @@ export default function App() {
     setScreen(nextScreen);
   };
 
-  // :::::::::::::::::::::::::::::::::::::::: NOT AUTHENTICATED (NOT LOGGED IN)::::::::::::::::::::::::::::::::::::::::
 
-  if (!account) {
+    // :::::::::::::::::::::::::::::::::::::::: NOT AUTHENTICATED (NOT LOGGED IN) => REGISTER && || => LOGIN ::::::::::::::::::::::::::::::::::::::::
+  
+    return !account ? (
 
-    if (screen === 'register') {
+    <AuthLayout 
+      screen={screen}
+      handleNav={handleNav}
+      handleRegisterSuccess={handleRegisterSuccess}
+      handleLoginSuccess={handleLoginSuccess}
+    />
 
-      return (
-        <div className="auth-container">
+  ) : (
 
-          <RegisterForm
-            onSuccess={handleRegisterSuccess}
-          />
-
-          <button
-            type="button"
-            onClick={() => handleNav('login')}
-          >
-            Already have an account? Login
-          </button>
-
-        </div>
-      );
-    }
-
-
-    return (
-      <div className="auth-container">
-
-        <LoginForm
-          onSuccess={handleLoginSuccess}
-        />
-
-        <button
-          type="button"
-          onClick={() => handleNav('register')}
-        >
-          Create an account
-        </button>
-
-      </div>
-    );
-
-  }
-
-  // :::::::::::::::::::::::::::::::::::::::: AUTHENTICATED (LOGGED IN) => MAIN APP ::::::::::::::::::::::::::::::::::::::::
-
-
-  return (
+    // :::::::::::::::::::::::::::::::::::::::: AUTHENTICATED (LOGGED IN) => MAIN APP ::::::::::::::::::::::::::::::::::::::::
 
     <MainLayout account={account} onLogout={handleLogout} onNav={handleNav} >
 
-
       {screen === 'reader' && (
-        <CenterPage
-          account={account}
-          onNav={handleNav}
-        />
+        <CenterPage account={account} onNav={handleNav} />
       )}
 
       {screen === 'account-settings' && (
-        <AccountSettings
-          account={account}
-          onNav={handleNav}
-        />
+        <AccountSettings account={account} onNav={handleNav} />
       )}
 
-
       {screen === 'cool-links' && (
-        <CoolLinks
-          onNav={handleNav}
-        />
+        <CoolLinks onNav={handleNav} />
       )}
 
       {screen === 'categories-management' && (
-        <Categories
-          onNav={handleNav}
-        />
+        <Categories onNav={handleNav} />
       )}
-
-      {screen === 'tags-management' && (
-        <div>
-          <button onClick={() => handleNav("reader")}>🢦 Back to Feeds</button>
-          <h2>My Tags Management Hub</h2>
-          <p>Tag configuration workspace coming soon.</p>
-        </div>
-      )}
-
 
       {screen === 'feed-sources' && (
-        <FeedSources
-          onNav={handleNav}
-        />
+        <FeedSources onNav={handleNav} />
       )}
 
       {screen === 'subscriptions' && (
-        <Subscriptions
-          onNav={handleNav}
-        />
+        <Subscriptions onNav={handleNav} />
       )}
-
 
     </MainLayout>
   );
 }
-
-
-
