@@ -10,3 +10,12 @@
 
 - with Firefox Developer Edition + MS VSCode on Debian 
 
+## Font
+
+[Rédaction Inclusive Regular](https://typotheque.byebyebinary.space/fr/fontes/bbb-redaction)
+
+## Icons
+
+https://www.freeicons.org/
+
+

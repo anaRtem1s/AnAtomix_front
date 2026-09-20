@@ -55,7 +55,15 @@ export default function LeftBar({ onNav }) {
 
           {/* VERTICAL RESIZE LINE */}
 
-          <div className="resize-handle" onPointerDown={startResize}></div>
+                <div 
+            className="resize-handle" 
+            onPointerDown={startResize}
+            tabIndex="0"
+            role="separator"
+            title="Drag separator handle to resize side panels"
+            aria-valuenow={ref.current ? ref.current.offsetWidth : 200}
+          
+          ></div>
         </div>
       </aside>
     </>

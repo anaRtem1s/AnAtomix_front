@@ -132,9 +132,9 @@ export default function FeedSources({ onNav }) {
 
   return (
     <div>
-      <h2>Feed Sources Catalogue</h2>
+      <button onClick={() => onNav("reader")}>🢦 Back to Feeds</button>
 
-      <button onClick={() => onNav("reader")}>← Back to Feeds</button>
+      <h2>Feed Sources Catalogue</h2>
 
       <form onSubmit={handleAddFeedSource}>
         <label htmlFor="add-feed-url-input">Add a new RSS or Atom feed URL link:</label>
@@ -173,7 +173,7 @@ export default function FeedSources({ onNav }) {
               <div>
                 {subscribedStatus[source.id] ? (
                   <button onClick={() => onNav('subscriptions')} aria-label="Manage subscriptions">
-                    ✔ Subscribed (Manage in Subscriptions)
+                    ✔ Subscribed (Subscriptions 🢥 )
                   </button>
                 ) : (
                   <button onClick={() => handleSubscribe(source.id)} aria-label={`Subscribe to ${source.title}`}>

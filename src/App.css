@@ -1,7 +1,6 @@
 /* !TO DO : (S)CSS */
 
-/* GENERAL RESET */
-
+/* ::::::::::::::::::::::::::::: GENERAL RESET ::::::::::::::::::::::::::::: */
 
 *,
 *::before,
@@ -26,7 +25,18 @@ body {
   line-height: 1.5;
   /* Improve text rendering */
   -webkit-font-smoothing: antialiased;
+  /* Using custom font */
+  font-family: 'Redaction-Inclusive-Regular', sans-serif;
+  /* Allow ligatures */
+  font-feature-settings: "liga" 1;
+}
 
+@font-face {
+  font-family: 'YourFontName';
+  src: url('/fonts/Redaction-Inclusive-Regular.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Improve media defaults */
@@ -63,6 +73,76 @@ p {
   text-wrap: pretty;
 }
 
+a:link,
+a:visited {
+  color: #e28b08;
+  text-decoration: underline;
+}
+
+a,
+button:hover,
+a,
+button:active,
+a,
+button:focus-visible {
+  color: #ffffff;
+  text-decoration: none;
+  outline: none;
+}
+
+button {
+  color: darkorange;
+  border-radius: 10em;
+  padding: 0.1em;
+  border:none;
+  background: transparent;
+}
+
+/* ::::::::::::::::::::::::::::::::::::::::::::::::::: ACCESSIBILITY INSIDE REACT COMPONENTS /* :::::::::::::::::::::::::::::::::::::::::::::::::::  */
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font: inherit;
+  font-weight: bold;
+  margin-bottom: 1em;
+  padding: 0;
+}
+
+.alert-message {
+  color: #ff6b6b;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.btn-disabled {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.btn-danger:hover,
+.btn-danger:focus-visible {
+  background-color: #b91c1c;
+  outline: 2px solid #17ecb7;
+}
+
+
+.btn-tags-management:hover,
+.btn-tags-management:focus-visible {
+  background-color: #052c34;
+  outline: 2px solid #ec17da;
+}
 
 /*  ! TO DO */
 
@@ -88,28 +168,26 @@ p {
 
 /* :::::::::::::::::::::::::::::::::::::::: MAIN APP PAGE ::::::::::::::::::::::::::::::::::::::::::::::::::: */
 
-.main-layout {
-  display: flex;
-  flex-direction: column;
-  /* Full viewport height */
-  height: 100vh;
-  width: 100%;
-}
-
-.header {
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 0, 200);
+header {
+  background: linear-gradient(90deg, #011412 0%, #0c2b29 50%, #113b39 100%);
+  color: #e28b08;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1em;
+  border-bottom: 1px solid rgba(23, 236, 183, 0.08);
 }
+
+header h1 button {
+  color: #e28b08;
+}
+
 
 .header-nav {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 1em;
+  gap: 2em;
 }
 
 main {
@@ -117,10 +195,36 @@ main {
   overflow: auto;
 }
 
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  /* Full viewport height */
+  height: 100vh;
+  width: 100%;
+  background-color: #020b0d;
+}
+
 .middle-container {
   display: flex;
   height: 100%;
   width: 100%;
+  /* footer visibility */
+  overflow: scroll;
+}
+
+.leftbar-container {
+  /* Anchor for the absolute resizing handle */
+  position: relative;
+  background: linear-gradient(180deg, #011412 0%, #052120 70%, #0c3330 100%);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1em;
+  gap: 5em;
+  border-right: 1px solid rgba(23, 236, 183, 0.08);
 }
 
 .resize-handle {
@@ -132,24 +236,10 @@ main {
   cursor: ew-resize;
 }
 
-.leftbar-container {
-  position: relative;
-  /* Anchor for the absolute resizing handle */
-  background-color: cadetblue;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* Stops horizontal scroll bars when resizing */
-  padding: 1em;
-  gap: 1em;
-  /* Clean vertical spacing between menu buttons */
-}
-
 .centerpage-container {
-  background-color: rgba(221, 145, 4, 0.849);
+  background: linear-gradient(135deg, #071f21 0%, #0a2628 40%, #031718 100%);
+  display: flex;
+  color: rgba(197, 196, 195, 0.973);
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -158,20 +248,39 @@ main {
   overflow-y: scroll;
 }
 
+.centerpage-container>div>ul>li {
+  background: rgba(1, 20, 18, 0.15);
+  padding: 1.25em;
+  margin-bottom: 1.25em;
+  border-radius: 8px;
+  border: 1px solid rgba(226, 139, 8, 0.12);
+}
+
+
 .feed-sources-list-ctnr {
   overflow: scroll;
-} 
+}
 
 .feed-sources-list {
   display: flex;
   flex-direction: column;
-   height: 100vh;
+  height: 100vh;
   flex-wrap: wrap;
   overflow: none;
 }
 
+.rss-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.4em;
+  /* Ensures the SVG scales proportionally to line text sizing */
+  flex-shrink: 0;
+}
+
 .footer {
-  background-color: rgba(30, 3, 32, 0.897);
+  background-color: rgba(3, 29, 32, 0.897);
   color: rgba(23, 236, 183, 0.877);
   display: flex;
   align-items: center;
@@ -195,4 +304,3 @@ main {
 .footer-nav a:hover {
   color: lightseagreen;
 }
-

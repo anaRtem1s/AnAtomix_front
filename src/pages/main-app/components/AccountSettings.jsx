@@ -3,17 +3,29 @@ import { useForm } from "react-hook-form";
 export default function AccountSettings({ account, onNav }) {
 
   const {
-    register,
-    handleSubmit,
-    setError,
-    watch,
-    formState: { errors },
-    reset,
+    register: registerProfile,
+    handleSubmit: handleProfileSubmit,
+    setError: setProfileError,
+    formState: { errors: profileErrors },
+    reset: resetProfile,
   } = useForm({
     defaultValues: {
-      //! CHECK WHY SOMETIMES APPEAR SOMETIMES NOT (firefox forms settings?)
+      //? CHECK WHY APPEARS  (BROWSER forms settings?)
       username: account.username || "",
       email: account.email || "",
+    },
+    // ANNOYING THE USER :)
+    mode: "onChange",
+  });
+
+  const {
+    register: registerPassword,
+    handleSubmit: handlePasswordSubmit,
+    setError: setPasswordError,
+    formState: { errors: passwordErrors },
+    reset: resetPassword,
+  } = useForm({
+    defaultValues: {
       newPassword: "",
     },
     // ANNOYING THE USER :)
@@ -26,13 +38,10 @@ export default function AccountSettings({ account, onNav }) {
     // Check if any field was actually modified
     
     const hasChanges =
-
       data.username !== account.username || data.email !== account.email;
 
     if (!hasChanges) {
-
       alert("No changes made.");
-
       return;
     }
 
@@ -49,172 +58,171 @@ export default function AccountSettings({ account, onNav }) {
       if (!response.ok) {
         const error = await response.json();
         if (error.field === "username")
-          setError("username", { message: error.message });
+          setProfileError("username", { message: error.message });
         else if (error.field === "email")
-          setError("email", { message: error.message });
-        else setError("root", { message: error.message });
+          setProfileError("email", { message: error.message });
+        else setProfileError("root", { message: error.message });
         return;
       }
 
       alert("Account info updated!");
-
-      reset();
-
+      resetProfile();
     } catch (error) {
-
-      setError("root", { message: 'Server unreachable sorry, please try again later 🐾' });
-    };
+      setProfileError("root", { message: 'Server unreachable sorry, please try again later 🐾' });
+    }
   };
-    // UPDATE PSSWD
 
-    const updatePassword = async (data) => {
-      if (!data.newPassword) return;
+  // UPDATE PSSWD
 
-      try {
-        const response = await fetch(`/api/accounts/${account.id}/update`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            newPassword: data.newPassword,
-          }),
-        });
+  const updatePassword = async (data) => {
+    if (!data.newPassword) return;
 
-        if (!response.ok) {
-          const error = await response.json();
+    try {
+      const response = await fetch(`/api/accounts/${account.id}/update`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          newPassword: data.newPassword,
+        }),
+      });
 
-          setError("root", { message: error.message });
-
-          return;
-        }
-
-        alert("Password updated! ");
-
-        reset();
-
-      } catch (error) {
-
-        setError("confirmPassword", {
-
-          message: "Server unreachable sorry, please try again later 🐾",
-
-        });
+      if (!response.ok) {
+        const error = await response.json();
+        setPasswordError("root", { message: error.message });
+        return;
       }
-    };
-  
 
-    return (
-      <div>
+      alert("Password updated! ");
+      resetPassword();
+    } catch (error) {
+      setPasswordError("root", {
+        message: "Server unreachable sorry, please try again later 🐾",
+      });
+    }
+  };
 
-        {/* <== BACK TO FEEDS BTN */}
+  return (
+    <div>
 
-        <button onClick={() => onNav("reader")}>← Back to Feeds</button>
+      {/* <== BACK TO FEEDS BTN */}
+      <button 
+        onClick={() => onNav("reader")}
+        title="Back to feeds dashboard list view"
+      >
+        🢦 Back to Feeds
+      </button>
 
-        <h1>Account Settings</h1>
+      <h1>Account Settings</h1>
 
-        {errors.root && (
-          <span style={{ color: "red" }}>{errors.root.message}</span>
-        )}
+      {profileErrors.root && (
+        <span className="alert-message" role="alert">{profileErrors.root.message}</span>
+      )}
+      {passwordErrors.root && (
+        <span className="alert-message" role="alert">{passwordErrors.root.message}</span>
+      )}
 
-        {/* FORM 1: MODIFY ACCOUNT INFO */}
-
-        <form autoComplete="off" onSubmit={handleSubmit(updateProfile)}>
-          <h2>Change your username / email: </h2>
+      {/* FORM 1: MODIFY ACCOUNT INFO */}
+      <form autoComplete="off" onSubmit={handleProfileSubmit(updateProfile)}>
+    
+        <fieldset>
+          <legend>Change your username / email: </legend>
 
           <div>
             <label htmlFor="username-update"> New username: </label>
             <input
-              id="username-update" type="text"
-              
-              {...register("username", {
-
-                maxLength: 
-                {
+              id="username-update" 
+              type="text"
+              aria-describedby={profileErrors.username ? "username-error-desc" : undefined}
+              {...registerProfile("username", {
+                maxLength: {
                   value: 50,
                   message: "This username is too long (max 50 characters), sorry",
                 },
               })}
             />
-            {errors.username && (
-              <span style={{ color: "red" }}>{errors.username.message}</span>
+            {profileErrors.username && (
+              <span id="username-error-desc" className="alert-message" role="alert">{profileErrors.username.message}</span>
             )}
           </div>
 
           <div>
             <label htmlFor="email-update">New email: </label>
             <input
-              id="email-update" type="email"
-
-              {...register(
-
-                "email",
-                {
-                  pattern: 
-                  {
-                    value: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/,
-                    message: "Invalid email. Go again.",
-                  },
+              id="email-update" 
+              type="email"
+              aria-describedby={profileErrors.email ? "email-error-desc" : undefined}
+              {...registerProfile("email", {
+                pattern: {
+                  value: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+\$/,
+                  message: "Invalid email. Go again.",
                 },
-              )}
+              })}
             />
-            {errors.email && (
-              <span style={{ color: "red" }}>{errors.email.message}</span>
+            {profileErrors.email && (
+              <span id="email-error-desc" className="alert-message" role="alert">{profileErrors.email.message}</span>
             )}
           </div>
 
           <button type="submit">Save changes</button>
-        </form>
+        </fieldset>
+      </form>
 
-      
-        {/* FORM 2: CHANGE PASSWORD */}
+      {/* FORM 2: CHANGE PASSWORD */}
+      <form onSubmit={handlePasswordSubmit(updatePassword)}>
 
-        <form onSubmit={handleSubmit(updatePassword)}>
-
-          <h2>Change your password: </h2>
+        <fieldset>
+          <legend>Change your password: </legend>
 
           <div>
             <label htmlFor="password-update">New password: </label>
             <input
               id="password-update"
               type="password"
-              {...register("newPassword", 
-                {
-                minLength: 
-                { 
+              aria-describedby={passwordErrors.newPassword ? "password-error-desc" : undefined}
+              {...registerPassword("newPassword", {
+                minLength: { 
                   value: 8, 
                   message: "Password must contain minimum 8 characters" 
                 },
-                pattern: 
-                {
-                  value:
-                    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/,
+                pattern: {
+                  value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}\$/,
                   message: "Must include uppercase, lowercase, digit, and special character",
                 },
               })}
             />
-            {errors.newPassword && (
-              <span style={{ color: "red" }}>{errors.newPassword.message}</span>
+            {passwordErrors.newPassword && (
+              <span id="password-error-desc" className="alert-message" role="alert">{passwordErrors.newPassword.message}</span>
             )}
           </div>
 
-
           <button type="submit">Change password [ and remember it please :) ]</button>
-        </form> 
-      
+        </fieldset>
+      </form> 
 
+      <section aria-labelledby="admin-actions-heading">
+        <h2 id="admin-actions-heading">Administrative Controls</h2>
 
         {/* DEACTIVATE ACCOUNT = ADMIN ONLY */}
+        
+        <button 
+          className="btn-disabled"
+          disabled
+          aria-disabled="true"
+        >
+          Deactivate account ⚠️ (Admin only [= if you're annoying me]) 
+        </button>
 
-        <button style={{ background: "#ccc", cursor: "not-allowed" }} disabled>
-          Deactivate account ⚠️ (Admin only [= if you're annoying me]) </button>
-
-          {/* //! TO TEST */}
+        {/* //! TO TEST */}
 
         {/* DELETE ACCOUNT */}
-
-        <button style={{ background: "pink" }}>Delete Account ❌ This is irreversible. </button>
-      </div>
-    );
+      
+        <button className="btn-danger">
+          Delete Account 💣 (This is irreversible).
+        </button>
+      </section>
+    </div>
+  );
 }

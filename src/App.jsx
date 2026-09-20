@@ -195,7 +195,7 @@ export default function App() {
 
       {screen === 'tags-management' && (
         <div>
-          <button onClick={() => handleNav("reader")}>← Back to Feeds</button>
+          <button onClick={() => handleNav("reader")}>🢦 Back to Feeds</button>
           <h2>My Tags Management Hub</h2>
           <p>Tag configuration workspace coming soon.</p>
         </div>

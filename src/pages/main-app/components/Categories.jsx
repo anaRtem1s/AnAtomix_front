@@ -166,19 +166,19 @@ export default function Categories({ onNav }) {
 
   return (
     <div>
+      <button onClick={() => onNav("reader")}>🢦 Back to Feeds</button>
 
       <h2>Categories</h2>
 
-      <button onClick={() => onNav("reader")}>← Back to Feeds</button>
-
       {/* CREATE SUBMISSION FORM PANEL GROUP */}
+      
       <form onSubmit={handleCreateCategory}>
         <h3>Create a new category:</h3>
         <label htmlFor="new-category-input">Category name:</label>
         <input
           id="new-category-input"
           type="text"
-          placeholder="Example: Tech, Sports, Science..."
+          placeholder="Ex.: Van Life"
           value={newCategoryTitleInput}
           onChange={(eventElement) => setNewCategoryTitleInput(eventElement.target.value)}
           required

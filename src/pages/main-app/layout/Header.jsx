@@ -1,6 +1,6 @@
 export default function Header({ account, onLogout, onNav }) {
 
-  // --- DEV  ---
+  // --- DEV TEST ---
 
   console.log("Account:", account);
 
@@ -13,15 +13,13 @@ export default function Header({ account, onLogout, onNav }) {
 
   return (
     <header className="header">
-      <h1 onClick={() => onNav('reader')} role="button" className="app-name"
-        tabIndex="0"
-        onKeyDown={(eventElement) => {
-          if (eventElement.key === 'Enter' || eventElement.key === ' ') {
-            onNav('reader');
-          }
-        }}
-        aria-label="Go back to articles stream">
-        AnAtomix: RSS | Atom Feeds Aggregator
+      <h1 className="app-name">
+        <button
+          onClick={() => onNav('reader')}
+          title="Return to home feeds stream view"
+          aria-label="Go back to articles stream">
+          | AnAtomix Feeds Aggregator |
+        </button>
       </h1>
       <nav>
         <ul className="header-nav">
@@ -56,7 +54,7 @@ export default function Header({ account, onLogout, onNav }) {
               {/* LINX BUTTON */}
 
               <li>
-                <button onClick={() => onNav('cool-links')} role="contentinfo" className="btn-cool-links">
+                <button onClick={() => onNav('cool-links')} className="btn-cool-links">
                   🥝 Cool linX
                 </button>
               </li>
