@@ -1,9 +1,11 @@
+
 import LoginForm from '../components/Login.jsx';
 import RegisterForm from '../components/Register.jsx';
 
 export default function AuthLayout({ screen, handleNav, handleRegisterSuccess, handleLoginSuccess }) {
   return (
     <div className="auth-layout">
+        <h1 id="auth-welcome-title">AnAtomix</h1>
       <div className="auth-container">
 
         {/* CONDITIONALLY RENDERS */}
@@ -17,12 +19,14 @@ export default function AuthLayout({ screen, handleNav, handleRegisterSuccess, h
             </button>
 
           </>
+
         ) : (
+
           <>
             <LoginForm onSuccess={handleLoginSuccess} />
 
             <button type="button" onClick={() => handleNav('register')}>
-             🔏 Create an account? 
+              🔏 Create an account?
             </button>
 
           </>

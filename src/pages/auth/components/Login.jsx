@@ -79,7 +79,7 @@ export default function LoginForm({ onSuccess }) {
 
     return (
         <div>
-            <h1 id="login-form">Login</h1>
+            <h2 id="login-form">Login</h2>
             <form
                 onSubmit={handleSubmit(sendLogin)}
                 className="form-layout-container"

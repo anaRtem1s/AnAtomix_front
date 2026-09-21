@@ -103,6 +103,7 @@ export default function FeedSources({ onNav }) {
       const token = localStorage.getItem('token');
 
       // CLEAR ANY RELEVANT ERROR ATTACHED TO THIS SPECIFIC ELEMENT KEY
+
       setRowErrors(prev => ({ ...prev, [feedSourceId]: null }));
 
       const response = await fetch('http://localhost:8081/api/subscriptions', {
@@ -153,7 +154,7 @@ export default function FeedSources({ onNav }) {
         </button>
       </form>
 
-      {/* OPERATIONAL ALERTS OR FEEDBACK STATUS RENDERERS */}
+      {/* OPERATIONAL ALERTS OR FEEDBACK ON STATUS  */}
 
       {loading && <p role="status">Fetching feeds database list...</p>}
 
@@ -190,7 +191,7 @@ export default function FeedSources({ onNav }) {
         </ul>
   
         {sources.length === 0 && !loading && (
-          <p>No RSS feeds added to this account yet.</p>
+          <p>No RSS | Atom feeds subscriptions for you yet.</p>
         )}
       </div>
 </div>

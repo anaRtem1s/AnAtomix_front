@@ -37,14 +37,15 @@ export default function LeftBar({ onNav }) {
 
           {/* DISPLAY ALL ARTICLES BUTTON */}
 
-          <button onClick={() => onNav('reader')} className="btn-all-feeds">
-           🧁 All feeds
+          <button onClick={() => onNav('reader')} 
+          className="btn-your-feeds">
+           🧁 Your feeds
           </button>
         
           {/* FEED SOURCES CATALOGUE BUTTON */}
 
           <button onClick={() => onNav('feed-sources')} className="btn-feed-sources-catalogue">
-            🍒 Feed sources catalogue
+          🍒 Feed sources catalogue
           </button>
 
           {/* SUBSCRIPTIONS BUTTON */}

@@ -13,6 +13,9 @@ export default function Header({ account, onLogout, onNav }) {
 
   return (
     <header className="header">
+
+      //? ACCESSIBILITY TITLE ORDER TO CHECK (h1 in Auth screen)
+
       <h1 className="app-name">
         <button
           onClick={() => onNav('reader')}
@@ -21,6 +24,7 @@ export default function Header({ account, onLogout, onNav }) {
           | AnAtomix Feeds Aggregator |
         </button>
       </h1>
+      
       <nav>
         <ul className="header-nav">
 
@@ -29,7 +33,6 @@ export default function Header({ account, onLogout, onNav }) {
           {account ? (
             <>
               {/* ACCOUNT SETTINGS BUTTON */}
-
               <li>
                 <button onClick={() => onNav('account-settings')} className="btn-account-settings">
                   ⚙️ Account settings

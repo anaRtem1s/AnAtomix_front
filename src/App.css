@@ -112,6 +112,12 @@ legend {
   padding: 0;
 }
 
+#account-status-admin{
+  display:flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
 .alert-message {
   color: #ff6b6b;
   font-size: 0.875rem;
@@ -119,15 +125,17 @@ legend {
 }
 
 .btn-disabled {
-  background-color: #1e293b;
+  background-color: #b459048a;
   color: #cbd5e1;
   cursor: not-allowed;
+  padding: 0.5em;
 }
 
 .btn-danger {
   background-color: #dc2626;
   color: #ffffff;
   cursor: pointer;
+  padding: 0.5em;
 }
 
 .btn-danger:hover,
@@ -136,15 +144,15 @@ legend {
   outline: 2px solid #17ecb7;
 }
 
-.btn-tags-management:hover,
-.btn-tags-management:focus-visible {
-  background-color: #052c34;
-  outline: 2px solid #ec17da;
-}
-
-/*  ! TO DO */
 
 /* :::::::::::::::::::::::::::::::::::::::: AUTH PAGE ::::::::::::::::::::::::::::::::::::::::::::::::::: */
+
+.auth-layout {
+  /* #auth-welcome-title parent position reference */
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
 
 .auth-container {
   display: flex;
@@ -156,19 +164,33 @@ legend {
   background: linear-gradient(90deg, #011412 0%, #052120 70%, #0c3330 100%);
 }
 
+#auth-welcome-title {
+  position: absolute;
+  top: 1em;
+  /* center of the viewport window */
+  left: 50%;
+  /* centered regardless of name length */
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Redaction-Inclusive-Regular', sans-serif;
+  color: #e28b08;
+  font-size: 3em;
+  letter-spacing: 0.1em;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 3;
 
-/* .form-layout-container{} */
+}
 
 
 .form-row-container {
   display: flex;
   flex-direction: column;
-  align-items:flex-start;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .auth-btn {
-  border-style:solid;
+  border-style: solid;
   border-width: 0.1em;
   color: darkorange;
 }
@@ -200,6 +222,7 @@ button {
   padding: 0.1em;
   border: none;
   background: transparent;
+  margin: 0.2em;
 }
 
 header {
@@ -261,6 +284,8 @@ main {
   gap: 5em;
   align-items: flex-start;
 }
+
+
 
 .resize-handle {
   position: absolute;

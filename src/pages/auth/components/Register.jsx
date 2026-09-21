@@ -81,7 +81,7 @@ export default function RegisterForm({ onSuccess }) {
 
     return (
         <div>
-            <h1 id="register-form">Register</h1>
+            <h2 className="register-form">Register</h2>
             <form
                 onSubmit={handleSubmit(sendRegistration)}
                 className="form-layout-container"

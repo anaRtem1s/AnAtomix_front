@@ -115,7 +115,7 @@ export default function AccountSettings({ account, onNav }) {
         🢦 Back to Feeds
       </button>
 
-      <h1>Account Settings</h1>
+      <h2>Account Settings</h2>
 
       {profileErrors.root && (
         <span className="alert-message" role="alert">{profileErrors.root.message}</span>
@@ -198,12 +198,13 @@ export default function AccountSettings({ account, onNav }) {
             )}
           </div>
 
-          <button type="submit">Change password [ and remember it please :) ]</button>
+          <button type="submit">Change password [!remember it please 🦝]</button>
         </fieldset>
       </form> 
 
-      <section aria-labelledby="admin-actions-heading">
-        <h2 id="admin-actions-heading">Administrative Controls</h2>
+      <section aria-labelledby="account status-heading">
+
+        <h3 id="account-status-admin">Account Status</h3>
 
         {/* DEACTIVATE ACCOUNT = ADMIN ONLY */}
         
@@ -212,15 +213,14 @@ export default function AccountSettings({ account, onNav }) {
           disabled
           aria-disabled="true"
         >
-          Deactivate account ⚠️ (Admin only [= if you're annoying me]) 
+          Deactivate account [Admin only=if you annoy me] 
         </button>
 
-        {/* //! TO TEST */}
 
-        {/* DELETE ACCOUNT */}
+        {/* DELETE ACCOUNT FOREVER */}
       
         <button className="btn-danger">
-          Delete Account 💣 (This is irreversible).
+          Delete account 💣 [irreversible]
         </button>
       </section>
     </div>

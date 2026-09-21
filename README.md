@@ -8,7 +8,7 @@
 
 ## Dev environement
 
-- with Firefox Developer Edition + MS VSCode on Debian 
+- with Mozilla Firefox Developer Edition + MS VSCode on Debian 
 
 ## Font
 
@@ -17,5 +17,11 @@
 ## Icons
 
 https://www.freeicons.org/
+
+
+## Accessibility testing
+
+- Firefox Dev Tools 
+- Axe Dev Tools extension for Firefox
 
 
