@@ -1,6 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 export default function AccountSettings({ account, onNav }) {
+
+  // ERRORS HANDLING
+
+  const [profileStatus, setProfileStatus] = useState(null);
+  const [passwordStatus, setPasswordStatus] = useState(null);
 
   const {
     register: registerProfile,
@@ -32,11 +38,12 @@ export default function AccountSettings({ account, onNav }) {
     mode: "onChange",
   });
 
-  // Update USERNAME || EMAIL
+  // UPDATE USERNAME || EMAIL
 
-  const updateProfile = async (data) => {
+  const updateUsernameOrEmail = async (data) => {
+
     // Check if any field was actually modified
-    
+
     const hasChanges =
       data.username !== account.username || data.email !== account.email;
 
@@ -65,7 +72,8 @@ export default function AccountSettings({ account, onNav }) {
         return;
       }
 
-      alert("Account info updated!");
+      setProfileStatus({ type: "success", message: "Account info updated successfully!" });
+      resetProfile({ username: data.username, email: data.email });
       resetProfile();
     } catch (error) {
       setProfileError("root", { message: 'Server unreachable sorry, please try again later 🐾' });
@@ -95,7 +103,7 @@ export default function AccountSettings({ account, onNav }) {
         return;
       }
 
-      alert("Password updated! ");
+      setPasswordStatus({ type: "success", message: "Password updated successfully!" });
       resetPassword();
     } catch (error) {
       setPasswordError("root", {
@@ -104,11 +112,42 @@ export default function AccountSettings({ account, onNav }) {
     }
   };
 
+
+  // DELETE ACCOUNT 
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm("WARNING: Are you sure you want to delete your account forever? 💣");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`/api/accounts/${account.id}/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        alert(error.message || "Could not delete account.");
+        return;
+      }
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("account");
+      window.location.reload();
+    } catch (error) {
+      alert("Server unreachable sorry, please try again later 🐾");
+    }
+  };
+
   return (
-    <div className="cpage-container">
+    <div className="centerpage-container">
 
       {/* <== BACK TO FEEDS BTN */}
-      <button 
+
+      <button
         onClick={() => onNav("reader")}
         title="Back to feeds dashboard list view"
       >
@@ -117,6 +156,8 @@ export default function AccountSettings({ account, onNav }) {
 
       <h2>Account Settings</h2>
 
+      {/* ERROR ANCHORS */}
+
       {profileErrors.root && (
         <span className="alert-message" role="alert">{profileErrors.root.message}</span>
       )}
@@ -124,16 +165,30 @@ export default function AccountSettings({ account, onNav }) {
         <span className="alert-message" role="alert">{passwordErrors.root.message}</span>
       )}
 
+      {/* ERROR ALERTS TO USER */}
+
+      {profileStatus && (
+        <span className={profileStatus.type === "success" ? "success-message" : "alert-message"} role="alert">
+          {profileStatus.message}
+        </span>
+      )}
+      {passwordStatus && (
+        <span className={passwordStatus.type === "success" ? "success-message" : "alert-message"} role="alert">
+          {passwordStatus.message}
+        </span>
+      )}
+
       {/* FORM 1: MODIFY ACCOUNT INFO */}
-      <form autoComplete="off" onSubmit={handleProfileSubmit(updateProfile)}>
-    
+
+      <form autoComplete="off" onSubmit={handleProfileSubmit(updateUsernameOrEmail)}>
+
         <fieldset>
           <legend>Change your username / email: </legend>
 
-          <div>
+          <div className="form-row-container">
             <label htmlFor="username-update"> New username: </label>
             <input
-              id="username-update" 
+              id="username-update"
               type="text"
               aria-describedby={profileErrors.username ? "username-error-desc" : undefined}
               {...registerProfile("username", {
@@ -148,15 +203,15 @@ export default function AccountSettings({ account, onNav }) {
             )}
           </div>
 
-          <div>
+          <div className="form-row-container">
             <label htmlFor="email-update">New email: </label>
             <input
-              id="email-update" 
+              id="email-update"
               type="email"
               aria-describedby={profileErrors.email ? "email-error-desc" : undefined}
               {...registerProfile("email", {
                 pattern: {
-                  value: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+\$/,
+                  value: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/,
                   message: "Invalid email. Go again.",
                 },
               })}
@@ -166,29 +221,32 @@ export default function AccountSettings({ account, onNav }) {
             )}
           </div>
 
-          <button type="submit">Save changes</button>
+          <div className="form-row-container">
+            <button type="submit">Save changes</button>
+          </div>
         </fieldset>
       </form>
 
       {/* FORM 2: CHANGE PASSWORD */}
+
       <form onSubmit={handlePasswordSubmit(updatePassword)}>
 
         <fieldset>
           <legend>Change your password: </legend>
 
-          <div>
+          <div className="form-row-container">
             <label htmlFor="password-update">New password: </label>
             <input
               id="password-update"
               type="password"
               aria-describedby={passwordErrors.newPassword ? "password-error-desc" : undefined}
               {...registerPassword("newPassword", {
-                minLength: { 
-                  value: 8, 
-                  message: "Password must contain minimum 8 characters" 
+                minLength: {
+                  value: 8,
+                  message: "Password must contain minimum 8 characters"
                 },
                 pattern: {
-                  value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}\$/,
+                  value: /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/,
                   message: "Must include uppercase, lowercase, digit, and special character",
                 },
               })}
@@ -198,30 +256,39 @@ export default function AccountSettings({ account, onNav }) {
             )}
           </div>
 
-          <button type="submit">Change password [!remember it please 🦝]</button>
+          <div className="form-row-container">
+            <button type="submit">Change password [!remember it please 🦝]</button>
+          </div>
         </fieldset>
-      </form> 
+      </form>
 
       <section aria-labelledby="account status-heading">
 
         <h3 id="account-status-admin">Account Status</h3>
 
         {/* DEACTIVATE ACCOUNT = ADMIN ONLY */}
-        
-        <button 
-          className="btn-disabled"
-          disabled
-          aria-disabled="true"
-        >
-          Deactivate account [Admin only=if you annoy me] 
-        </button>
-
+        <div className="form-row-container">
+          <button
+            type="button"
+            className="btn-disabled"
+            disabled
+            aria-disabled="true"
+          >
+            Deactivate account [Admin only=if you annoy me]
+          </button>
+        </div>
 
         {/* DELETE ACCOUNT FOREVER */}
-      
-        <button className="btn-danger">
-          Delete account 💣 [irreversible]
-        </button>
+
+        <div className="form-row-container">
+          <button
+            type="button"
+            className="btn-danger"
+            onClick={handleDeleteAccount}
+          >
+            Delete account 💣 [irreversible]
+          </button>
+        </div>
       </section>
     </div>
   );

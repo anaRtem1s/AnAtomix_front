@@ -19,21 +19,16 @@ import Subscriptions from './pages/main-app/components/Subscriptions.jsx';
 
 export default function App() {
 
-  // -----------------------------------------
+
   // AUTHENTICATION
-  // -----------------------------------------
 
   const [account, setAccount] = useState(null);
 
-  // -----------------------------------------
   // NAVIGATION
-  // -----------------------------------------
 
   const [screen, setScreen] = useState('login');
 
-  // -----------------------------------------
-  // RESTORE SESSION
-  // -----------------------------------------
+  //  RESTORE SESSION 
 
   useEffect(() => {
 
@@ -67,7 +62,7 @@ export default function App() {
   }, []);
 
 
-  //? :::::::::::::::::::::::::::::::::::::::: REGISTER ::::::::::::::::::::::::::::::::::::::::
+  // :::::::::::::::::::::::::::::::::::::::: REGISTER ::::::::::::::::::::::::::::::::::::::::
 
   const handleRegisterSuccess = () => {
     setScreen('login');
@@ -113,11 +108,11 @@ export default function App() {
   };
 
 
-    // :::::::::::::::::::::::::::::::::::::::: NOT AUTHENTICATED (NOT LOGGED IN) => REGISTER && || => LOGIN ::::::::::::::::::::::::::::::::::::::::
-  
-    return !account ? (
+  // :::::::::::::::::::::::::::::::::::::::: NOT AUTHENTICATED (NOT LOGGED IN) => REGISTER && || => LOGIN ::::::::::::::::::::::::::::::::::::::::
 
-    <AuthLayout 
+  return !account ? (
+
+    <AuthLayout
       screen={screen}
       handleNav={handleNav}
       handleRegisterSuccess={handleRegisterSuccess}

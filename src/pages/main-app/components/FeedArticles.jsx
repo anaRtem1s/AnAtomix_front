@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 
-export default function FeedArticles({ onNav, activeCategoryId, activeFeedSourceId }) {
+export default function FeedArticles({ onNav, activeCategoryId, activeFeedSourceId, showOnlyFavorites }) {
 
   const [feedArticles, setFeedArticles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -102,14 +103,15 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
       const articleInstance = feedArticles.find(a => a.id === articleId);
       const interactionLog = articleInstance?.mm_account_articles;
       const currentFavoriteStatus = interactionLog ? interactionLog.is_favorite : false;
+
       const response = await fetch(`http://localhost:8081/api/account_articles/${articleId}/favorite`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        
-        // ZOD VALIDATION REQUIRES A BODY TO PATCH THIS ROUTE, SO WE GIVE IT 
+
+        // ZOD VALIDATION REQUIRES A BODY TO PATCH THIS ROUTE
 
         body: JSON.stringify({
           is_favorite: !currentFavoriteStatus
@@ -119,7 +121,7 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
         handleLoadArticles();
       }
     } catch (err) {
-      console.error("FAVORITE BUTTON INTERACTION REJECTION: 💥 ", err.message);
+      console.error("FAV BUTTON INTERACTION REJECTION: 💥", err.message);
     }
   };
 
@@ -162,13 +164,29 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
   //  FILTER CONDITION B: SCAN DATA ROWS MATCHING INDIVIDUAL WEBSITE LOGS
 
   if (activeFeedSourceId) {
+
     displayedArticles = displayedArticles.filter(article => article.feed_source_id === activeFeedSourceId);
+  }
+
+  // FILTER CONDITION C: FAVORITES FILTER TO CHECK THE FIRST ITEM OF THE SEQUELIZE JUNCTION ARRAY
+
+  if (showOnlyFavorites) {
+
+    displayedArticles = displayedArticles.filter(article => {
+
+      const hasInteractionLog = article.mm_account_articles && article.mm_account_articles.length > 0;
+      if (hasInteractionLog) {
+        const userInteraction = article.mm_account_articles[0];
+        return userInteraction.is_favorite === true;
+      }
+      return false;
+    });
   }
 
   // CONDITIONAL RENDERING THE SINGLE ARTICLE VIEW SAFELY WITHOUT DANGEROUS MARKUP
 
   if (selectedArticle) {
-    
+
     // SCAN FRESH DATA FIELDS REGULARLY TO CAPTURE REAL-TIME STATE SAVES
 
     const freshArticleData = feedArticles.find(a => a.id === selectedArticle.id) || selectedArticle;
@@ -201,7 +219,7 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
 
           {isRead && (
             <button onClick={() => handleMarkAsUnread(freshArticleData.id)}>
-              ✉️ Mark as Unread
+              ✉️ Mark as unread
             </button>
           )}
         </div>
@@ -215,12 +233,18 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
           </small>
         </p>
 
-        {/* PLAINTEXT SUMMARY FIELD INSIDE A STANDARD PARAGRAPH TAG */}
-        <p>
-          {freshArticleData.summary || "No description overview available for this article."}
-        </p>
+        {/* SECURE RICH FORMATTING DISPLAY CONTAINER FULL CONTENT_HTML TEXT  */}
+        <div
+          className="article-rich-body"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(freshArticleData.content_html || freshArticleData.summary || "No content available.", {
+              ALLOWED_TAGS: ['p', 'b', 'i', 'em', 'strong', 'a', 'img', 'ul', 'ol', 'li', 'h3', 'h4', 'br', 'iframe'],
+              ALLOWED_ATTR: ['href', 'src', 'alt', 'target', 'width', 'height', 'frameborder']
+            })
+          }}
+        />
 
-        <p>
+        <p style={{ marginTop: '2rem' }}>
           <a href={freshArticleData.link} target="_blank" rel="noreferrer">
             Read full original article context on website
           </a>
@@ -235,7 +259,7 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
 
       <p>Latest articles</p>
 
-      {loading && <p> 💬 Fetching articles..</p>}
+      {loading && <p> 💬 Fetching articles.!.</p>}
 
       {error && <p> 💔 {error}</p>}
 
@@ -243,7 +267,7 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
         {displayedArticles.map((feedArticle) => {
           const feedSource = feedArticle.feed_source || feedArticle.feedSource;
 
-          // EXTRACT THE COERCED ACCOUNT LOG RECORD ASSIGNED TO THIS RECORD ROW
+          // EXTRACT THE ACCOUNT LOG RECORD ASSIGNED TO THIS RECORD ROW
 
           const interactionLog = feedArticle.mm_account_articles && feedArticle.mm_account_articles[0];
 
@@ -261,7 +285,6 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
                 )}
 
                 <h3>
-                  {/*INJECT AN UNOPENED VS OPENED INDICATOR GRAPHIC SYMBOL COMPONENT NATIVELY */}
 
                   <span>{isRead ? '📖 ' : '✉️ '}</span>
 
@@ -276,8 +299,6 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
                   }}>
                     {feedArticle.title}
                   </button>
-
-                  {/* 🔹 FIX: REMOVED HEART ATTACHMENT ACTION ELEMENT ENTIRELY FROM THIS LIST LOOP DISPLAY SCREEN */}
                 </h3>
 
                 <small>{feedArticle.author && <span>By {feedArticle.author} | </span>}
@@ -296,7 +317,7 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
       </ul>
 
       {displayedArticles.length === 0 && !loading && !error && (
-        <p>No articles loaded yet inside the database, sry.</p>
+        <p>No articles in the DB for this category, sry!</p>
       )}
     </div>
   );

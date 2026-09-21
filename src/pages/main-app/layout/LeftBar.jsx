@@ -37,15 +37,15 @@ export default function LeftBar({ onNav }) {
 
           {/* DISPLAY ALL ARTICLES BUTTON */}
 
-          <button onClick={() => onNav('reader')} 
-          className="btn-your-feeds">
-           🧁 Your feeds
+          <button onClick={() => onNav('reader')}
+            className="btn-your-feeds">
+            🧁 Your feeds
           </button>
-        
+
           {/* FEED SOURCES CATALOGUE BUTTON */}
 
           <button onClick={() => onNav('feed-sources')} className="btn-feed-sources-catalogue">
-          🍒 Feed sources catalogue
+            🍒 Feed sources catalogue
           </button>
 
           {/* SUBSCRIPTIONS BUTTON */}
@@ -56,14 +56,14 @@ export default function LeftBar({ onNav }) {
 
           {/* VERTICAL RESIZE LINE */}
 
-                <div 
-            className="resize-handle" 
+          <div
+            className="resize-handle"
             onPointerDown={startResize}
             tabIndex="0"
             role="separator"
             title="Drag separator handle to resize side panels"
             aria-valuenow={ref.current ? ref.current.offsetWidth : 200}
-          
+
           ></div>
         </div>
       </aside>

@@ -6,7 +6,7 @@ export default function MainLayout({ children, account, onLogout, onNav }) {
 
   return (
     <>
-      <div className="main-layout">
+      <div className="main-layout-container">
 
         <Header account={account} onLogout={onLogout} onNav={onNav} />
 

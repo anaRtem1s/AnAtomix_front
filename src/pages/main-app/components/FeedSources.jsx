@@ -137,7 +137,8 @@ export default function FeedSources({ onNav }) {
 
       <h2>Feed Sources Catalogue</h2>
 
-      <form onSubmit={handleAddFeedSource}>
+      <form className="form-container" 
+      onSubmit={handleAddFeedSource}>
         <label htmlFor="add-feed-url-input">Add a new RSS or Atom feed URL link:</label>
 
         <input
@@ -159,9 +160,9 @@ export default function FeedSources({ onNav }) {
       {loading && <p role="status">Fetching feeds database list...</p>}
 
       {/* GLOBAL CHANNELS FEED SOURCE MAP DISPLAY LIST */}
-      
-<div className="feed-sources-list-ctnr">
-  
+
+      <div className="feed-sources-list-ctnr">
+
         <ul className='feed-sources-list'>
           {sources.map((source) => (
             <li key={source.id}>
@@ -170,7 +171,7 @@ export default function FeedSources({ onNav }) {
                 <p>URL: <a href={source.feed_url}>{source.feed_url}</a></p>
                 {source.descr && <p>{source.descr}</p>}
               </div>
-  
+
               <div>
                 {subscribedStatus[source.id] ? (
                   <button onClick={() => onNav('subscriptions')} aria-label="Manage subscriptions">
@@ -181,7 +182,7 @@ export default function FeedSources({ onNav }) {
                     Subscribe
                   </button>
                 )}
-  
+
                 {rowErrors[source.id] && (
                   <p role="alert"> 💥 {rowErrors[source.id]}</p>
                 )}
@@ -189,11 +190,11 @@ export default function FeedSources({ onNav }) {
             </li>
           ))}
         </ul>
-  
+
         {sources.length === 0 && !loading && (
           <p>No RSS | Atom feeds subscriptions for you yet.</p>
         )}
       </div>
-</div>
+    </div>
   );
 }

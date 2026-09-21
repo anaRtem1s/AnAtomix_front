@@ -4,11 +4,15 @@ import { useState, useEffect } from 'react';
 import FeedArticles from './FeedArticles.jsx';
 
 export default function CenterPage({ account, onNav }) {
+
+  // DISPLAY FILTERS
+
   const [categories, setCategories] = useState([]);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
 
   // LOADING CATEGORIES TO GENERATE FILTER BUTTONS
-  
+
   useEffect(() => {
     const handleLoadCategories = async () => {
       try {
@@ -34,31 +38,63 @@ export default function CenterPage({ account, onNav }) {
   return (
     <>
       <div className="centerpage-container">
+
         <h2>Feeds filters</h2>
 
         {/* HORIZONTAL FILTER BAR */}
 
         <div className="feeds-filter-bar">
-          <button 
-            onClick={() => setActiveCategoryId(null)}
-            className={activeCategoryId === null ? "active-filter" : ""}
-          >
+          <button
+            onClick={() => {
+              setActiveCategoryId(null);
+
+              // TURNING ON ALL FEEDS EXPLICITLY CLEARS FAVORITES 
+
+              setShowOnlyFavorites(false);
+            }}
+            className={activeCategoryId === null && !showOnlyFavorites ? "active-filter" : ""}>
             All Feeds
           </button>
+
+          {/* FAVORITES / LOVED ARTICLES FILTER */}
+
+          <button
+            onClick={() => {
+
+              // Clears categories to avoid collision states
+
+              setActiveCategoryId(null);
+              setShowOnlyFavorites(true);
+            }}
+            className={showOnlyFavorites ? "active-filter" : ""}>
+            🧡 Loved articles
+          </button>
+
+          {/* CATEGORIES FILTER */}
 
           {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setActiveCategoryId(category.id)}
-              className={activeCategoryId === category.id ? "active-filter" : ""}
-            >
+              onClick={() => {
+
+                setActiveCategoryId(category.id);
+
+                // TURNING ON A CATEGORY CLEARS FAVORITES STATE
+
+                setShowOnlyFavorites(false);
+              }}
+              className={activeCategoryId === category.id ? "active-filter" : ""}>
               {category.title}
             </button>
           ))}
         </div>
 
         {/* FORWARD FILTER ID TO THE ARTICLES COMPONENT */}
-        <FeedArticles onNav={onNav} activeCategoryId={activeCategoryId} />
+
+        <FeedArticles onNav={onNav}
+          activeCategoryId={activeCategoryId}
+          showOnlyFavorites={showOnlyFavorites}
+        />
       </div>
     </>
   );

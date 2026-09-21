@@ -117,12 +117,11 @@ export default function Subscriptions({ onNav }) {
     <div className="cpage-container">
       <button
         onClick={() => onNav("reader")}
-        title="Back to feeds dashboard list view"
-      >
+        title="Back to feeds dashboard list view">
         🢦 Back to Feeds
       </button>
 
-      <h2>My Subscriptions</h2>
+      <h2>My subscriptions</h2>
 
       {loading && <p role="status">Loading subscriptions list data...</p>}
       {error && <p role="alert"> {error}</p>}
@@ -163,9 +162,9 @@ export default function Subscriptions({ onNav }) {
                 {/* DROP DOWN SELECTOR ASSIGNS OR UPDATES CATEGORY RELATIONSHIPS NATIVELY */}
 
                 <fieldset>
-                  <legend>Category Selection Matrix</legend>
+                  <legend>Category selection</legend>
 
-                  <label htmlFor={`category-assign-${subscription.id}`}>Assign a category:</label>
+                  <label htmlFor={`category-assign-${subscription.id}`}>Feed category:</label>
                   <select
                     id={`category-assign-${subscription.id}`}
                     value={subscription.category_id || ""}
@@ -182,7 +181,6 @@ export default function Subscriptions({ onNav }) {
 
                 <button
                   onClick={() => handleUnsubscribe(subscription.id)}
-
                 >
                   ⤫ Unsubscribe
                 </button>
