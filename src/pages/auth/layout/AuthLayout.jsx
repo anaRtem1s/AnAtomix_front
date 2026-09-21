@@ -1,26 +1,30 @@
 import LoginForm from '../components/Login.jsx';
 import RegisterForm from '../components/Register.jsx';
 
-export default function AuthLayout({screen, handleNav, handleRegisterSuccess, handleLoginSuccess }) {
+export default function AuthLayout({ screen, handleNav, handleRegisterSuccess, handleLoginSuccess }) {
   return (
     <div className="auth-layout">
       <div className="auth-container">
-        
+
         {/* CONDITIONALLY RENDERS */}
-        
+
         {screen === 'register' ? (
           <>
             <RegisterForm onSuccess={handleRegisterSuccess} />
+
             <button type="button" onClick={() => handleNav('login')}>
-              🔑 Login
+              🔑 Login?
             </button>
+
           </>
         ) : (
           <>
             <LoginForm onSuccess={handleLoginSuccess} />
+
             <button type="button" onClick={() => handleNav('register')}>
-              🔏 Create an account
+             🔏 Create an account? 
             </button>
+
           </>
         )}
 

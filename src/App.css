@@ -78,20 +78,23 @@ p {
 /* ::::::::::::::::::::::::::::::::::::::::::::::::::: ACCESSIBILITY - REACT CONTEXT /* :::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
 fieldset {
-  margin-bottom: 2.5rem; /* Pushes the next form section cleanly downward */
+  margin-bottom: 2.5rem;
+  /* Pushes the next form section cleanly downward */
 }
 
 fieldset label {
   display: block;
-  margin-top: 1.25rem;    /* Generates spacing between separate input rows */
-  margin-bottom: 0.35rem;  /* Keeps the label neatly tied to its target text box */
+  margin-top: 1.25rem;
+  /* Generates spacing between separate input rows */
+  margin-bottom: 0.35rem;
+  /* Keeps the label neatly tied to its target text box */
 }
 
 fieldset input {
   display: block;
   width: 100%;
-  max-width: 360px;       
-  padding: 0.6rem;         
+  max-width: 360px;
+  padding: 0.6rem;
 }
 
 
@@ -142,26 +145,32 @@ legend {
 /*  ! TO DO */
 
 /* :::::::::::::::::::::::::::::::::::::::: AUTH PAGE ::::::::::::::::::::::::::::::::::::::::::::::::::: */
-/* 
-  .register-form{
-
-
-  } 
-
-  .login-form
-
-
-  }  */
-
-
 
 .auth-container {
   display: flex;
-  gap: 2rem;
+  gap: 5em;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  height: 100vh;
   color: silver;
-  background: black;
+  background: linear-gradient(90deg, #011412 0%, #052120 70%, #0c3330 100%);
+}
+
+
+/* .form-layout-container{} */
+
+
+.form-row-container {
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  justify-content: center;
+}
+
+.auth-btn {
+  border-style:solid;
+  border-width: 0.1em;
+  color: darkorange;
 }
 
 
@@ -298,10 +307,11 @@ main {
   overflow: none;
 }
 
-.list-ctnr{
-  display:flex;
+.list-ctnr {
+  display: flex;
   flex-direction: column;
-  gap: 0.5em;;
+  gap: 0.5em;
+  ;
   margin: 1em;
 }
 

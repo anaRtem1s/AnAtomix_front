@@ -50,7 +50,6 @@ export default function Header({ account, onLogout, onNav }) {
                 </button>
               </li>
 
-
               {/* LINX BUTTON */}
 
               <li>
