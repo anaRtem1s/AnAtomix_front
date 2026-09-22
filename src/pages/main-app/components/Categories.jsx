@@ -171,7 +171,7 @@ export default function Categories({ onNav }) {
       <h2>Categories</h2>
 
       {/* CREATE SUBMISSION FORM PANEL GROUP */}
-      
+
       <form onSubmit={handleCreateCategory}>
         <h3>Create a new category:</h3>
         <label htmlFor="new-category-input">Category name:</label>

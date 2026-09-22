@@ -137,8 +137,8 @@ export default function FeedSources({ onNav }) {
 
       <h2>Feed Sources Catalogue</h2>
 
-      <form className="form-container" 
-      onSubmit={handleAddFeedSource}>
+      <form className="form-container"
+        onSubmit={handleAddFeedSource}>
         <label htmlFor="add-feed-url-input">Add a new RSS or Atom feed URL link:</label>
 
         <input

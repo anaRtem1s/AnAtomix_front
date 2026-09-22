@@ -4,12 +4,6 @@ export default function Header({ account, onLogout, onNav }) {
 
   console.log("Account:", account);
 
-  //! EXPLAIN
-
-  const go = (e, screenId) => {
-    e.preventDefault();
-    if (onNav) onNav(screenId);
-  };
 
   return (
     <header className="header">
@@ -24,7 +18,7 @@ export default function Header({ account, onLogout, onNav }) {
           | AnAtomix Feeds Aggregator |
         </button>
       </h1>
-      
+
       <nav>
         <ul className="header-nav">
 

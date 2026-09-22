@@ -22,6 +22,6 @@ https://www.freeicons.org/
 ## Accessibility testing
 
 - Firefox Dev Tools 
-- Axe Dev Tools extension for Firefox
+- Wave extension for Firefox by WebAIM
 
 

@@ -59,11 +59,16 @@ export default function LeftBar({ onNav }) {
           <div
             className="resize-handle"
             onPointerDown={startResize}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowLeft" && ref.current) { e.preventDefault(); ref.current.style.width = `${Math.max(200, ref.current.offsetWidth - 20)}px`; }
+              else if (e.key === "ArrowRight" && ref.current) { e.preventDefault(); ref.current.style.width = `${ref.current.offsetWidth + 20}px`; }
+            }}
             tabIndex="0"
             role="separator"
-            title="Drag separator handle to resize side panels"
+            aria-orientation="vertical"
+            aria-valuemin={200}
             aria-valuenow={ref.current ? ref.current.offsetWidth : 200}
-
+            title="Drag or use arrow keys to resize side panel"
           ></div>
         </div>
       </aside>

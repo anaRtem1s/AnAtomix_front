@@ -1,5 +1,3 @@
-/* !TO DO : (S)CSS */
-
 /* ::::::::::::::::::::::::::::: GENERAL RESET ::::::::::::::::::::::::::::: */
 
 *,
@@ -34,15 +32,15 @@ body {
 }
 
 @font-face {
-  font-family: 'YourFontName';
+  font-family: 'Redaction-Inclusive-Regular';
   src: url('/fonts/Redaction-Inclusive-Regular.woff2') format('woff2');
-  font-weight: 700;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 /* Improve media defaults */
-img,
+
 picture,
 video,
 canvas,
@@ -218,15 +216,21 @@ a:visited {
   text-decoration: underline;
 }
 
-a,
+a:hover,
+a:active,
+a:focus-visible,
 button:hover,
-a,
 button:active,
-a,
 button:focus-visible {
   color: cadetblue;
   text-decoration: none;
-  outline: none;
+}
+
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #17ecb7;
+  outline-offset: 2px;
 }
 
 button {
@@ -278,7 +282,7 @@ main {
   height: 100%;
   width: 100%;
   /* footer visibility */
-  overflow: scroll;
+  overflow: auto;
 }
 
 .leftbar-container {
@@ -319,12 +323,11 @@ main {
   background: linear-gradient(135deg, #071f21 0%, #0a2628 40%, #031718 100%);
   display: flex;
   color: rgba(197, 196, 195, 0.973);
-  display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   /* Scroll internally */
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 1em 2em;
 }
 
@@ -336,7 +339,7 @@ main {
 }
 
 .feed-sources-list-ctnr {
-  overflow: scroll;
+  overflow: auto;
 }
 
 
@@ -346,7 +349,7 @@ main {
   height: 100vh;
   flex-wrap: wrap;
   white-space: nowrap;
-  overflow: none;
+  overflow: auto;
 }
 
 .list-ctnr {

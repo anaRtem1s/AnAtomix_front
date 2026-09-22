@@ -5,7 +5,7 @@ import RegisterForm from '../components/Register.jsx';
 export default function AuthLayout({ screen, handleNav, handleRegisterSuccess, handleLoginSuccess }) {
   return (
     <div className="auth-layout">
-        <h1 id="auth-welcome-title">AnAtomix</h1>
+      <h1 id="auth-welcome-title">AnAtomix</h1>
       <div className="auth-container">
 
         {/* CONDITIONALLY RENDERS */}

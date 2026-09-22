@@ -98,28 +98,11 @@ export default function FeedArticles({ onNav, activeCategoryId, activeFeedSource
     try {
       const token = localStorage.getItem('token');
 
-      // ASKING DB IF ARTICLE IS ALREADY FAVOURITE SO WE CAN PASS THE OPPOSITE VALUES
-
-      const articleInstance = feedArticles.find(a => a.id === articleId);
-      const interactionLog = articleInstance?.mm_account_articles;
-      const currentFavoriteStatus = interactionLog ? interactionLog.is_favorite : false;
-
-      const response = await fetch(`http://localhost:8081/api/account_articles/${articleId}/favorite`, {
+      const response = await fetch(`/api/account_articles/${articleId}/favorite`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-
-        // ZOD VALIDATION REQUIRES A BODY TO PATCH THIS ROUTE
-
-        body: JSON.stringify({
-          is_favorite: !currentFavoriteStatus
-        })
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
       });
-      if (response.ok) {
-        handleLoadArticles();
-      }
+      if (response.ok) { handleLoadArticles(); }
     } catch (err) {
       console.error("FAV BUTTON INTERACTION REJECTION: 💥", err.message);
     }

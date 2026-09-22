@@ -64,10 +64,12 @@ export default function AccountSettings({ account, onNav }) {
 
       if (!response.ok) {
         const error = await response.json();
-        if (error.field === "username")
-          setProfileError("username", { message: error.message });
-        else if (error.field === "email")
-          setProfileError("email", { message: error.message });
+
+        // BACKEND ERRORS
+
+        const backendMsg = (error.message || "").toLowerCase();
+        if (backendMsg.includes("username")) setProfileError("username", { message: error.message });
+        else if (backendMsg.includes("email")) setProfileError("email", { message: error.message });
         else setProfileError("root", { message: error.message });
         return;
       }
@@ -262,7 +264,7 @@ export default function AccountSettings({ account, onNav }) {
         </fieldset>
       </form>
 
-      <section aria-labelledby="account status-heading">
+      <section aria-labelledby="account-status-admin">
 
         <h3 id="account-status-admin">Account Status</h3>
 

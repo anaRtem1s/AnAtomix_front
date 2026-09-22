@@ -49,6 +49,7 @@ export default function RegisterForm({ onSuccess }) {
                     password: data.password
                 })
             });
+
             //? si le backend refuse (doublon username/email uniques ==> erreur Zod du backend, tout ce qu'il renvoie en erreur)
 
             if (!response.ok) {
@@ -57,10 +58,12 @@ export default function RegisterForm({ onSuccess }) {
 
                 //? setError pose l'erreur du backend SUR LE BON CHAMP —
 
-                if (error.field === 'username') {
-                    setError("username", { message: 'This username is already taken' });
-                } else if (error.field === 'email') {
-                    setError("email", { message: 'This email is already registered' });
+                // BACKEND ERRORS
+                const backendMsg = (error.message || '').toLowerCase();
+                if (backendMsg.includes('username')) {
+                    setError("username", { message: error.message });
+                } else if (backendMsg.includes('email')) {
+                    setError("email", { message: error.message });
                 } else {
                     setError("confirmPassword", { message: error.message || 'Registration failed' });
                 }
@@ -77,6 +80,7 @@ export default function RegisterForm({ onSuccess }) {
 
             setError("confirmPassword", { message: 'Server unreachable sorry, please try again later 🐾' });
         }
+
     }
 
     return (

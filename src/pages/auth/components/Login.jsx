@@ -19,15 +19,6 @@ export default function LoginForm({ onSuccess }) {
         mode: 'onChange'
     });
 
-    // FRONTEND CHECK: NEEDS EITHER USERNAME OR EMAIL (NOT BOTH REQUIRED)
-
-    const validateLoginField = (value, context) => {
-        const { email, username } = context.values;
-        if (!email && !username) {
-            return "Provide an email or a username to log in";
-        }
-        return true;
-    };
 
 
     const sendLogin = async (data) => {
